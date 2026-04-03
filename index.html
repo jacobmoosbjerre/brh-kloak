@@ -369,7 +369,10 @@
     .cards-auto { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
     .steps { grid-template-columns: repeat(4, minmax(0,1fr)); }
     .audience-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
-    .service-grid { grid-template-columns: repeat(4, minmax(0,1fr)); }
+    .service-grid {
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      align-items: stretch;
+    }
     .review-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
     .gallery-grid { grid-template-columns: repeat(12, minmax(0,1fr)); }
     .contact-grid { grid-template-columns: minmax(300px, 0.95fr) minmax(0, 1.05fr); align-items: start; }
@@ -462,14 +465,31 @@
     .service-card {
       padding: 0;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
     .service-card-top {
       padding: 22px 22px 18px;
       background: linear-gradient(135deg, #eef4ff 0%, #dfeaff 100%);
       border-bottom: 1px solid var(--line);
+      min-height: 236px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .service-card-top h3 {
+      min-height: 2.5em;
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+    .service-card-top p {
+      margin-bottom: 0;
     }
     .service-card-body {
       padding: 22px;
+      flex: 1;
     }
 
     .stat-card {
@@ -554,18 +574,108 @@
       font-weight: 800;
     }
 
+    .faq-item {
+      position: relative;
+      overflow: hidden;
+      min-height: 92px;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+      background:
+        radial-gradient(circle at top right, rgba(42, 108, 255, 0.08), transparent 42%),
+        linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
+    }
+    .faq-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 34px rgba(17, 24, 39, 0.08);
+      border-color: #d9e5ff;
+    }
+    .faq-item[open] {
+      border-color: #cfe0ff;
+      background:
+        radial-gradient(circle at top right, rgba(42, 108, 255, 0.12), transparent 44%),
+        linear-gradient(180deg, #ffffff 0%, #f4f8ff 100%);
+      box-shadow: 0 18px 38px rgba(17, 24, 39, 0.09);
+    }
     .faq-item summary {
       cursor: pointer;
       list-style: none;
-      font-weight: 700;
+      font-weight: 800;
       display: flex;
       justify-content: space-between;
+      align-items: flex-start;
       gap: 16px;
+      font-size: 1.02rem;
+      line-height: 1.35;
     }
     .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary .faq-icon {
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      border-radius: 999px;
+      border: 1px solid #d7e3fb;
+      background: #f3f7ff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 1.15rem;
+      font-weight: 700;
+      transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+    }
+    .faq-item[open] summary .faq-icon {
+      transform: rotate(45deg);
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
     .faq-item p {
-      margin-top: 12px;
+      margin-top: 14px;
       color: var(--muted);
+      max-width: 52ch;
+      line-height: 1.65;
+    }
+    .faq-intro-card {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    .faq-highlight,
+    .faq-callout {
+      border-radius: 22px;
+      padding: 22px 24px;
+      border: 1px solid #dfe7f3;
+      background: #fff;
+      box-shadow: 0 14px 28px rgba(17, 24, 39, 0.05);
+    }
+    .faq-highlight {
+      background: linear-gradient(135deg, #f5f9ff 0%, #eef4ff 100%);
+    }
+    .faq-highlight strong,
+    .faq-callout strong {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+    .faq-highlight p,
+    .faq-callout p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+    .faq-callout {
+      background: linear-gradient(135deg, #0f2743 0%, #173656 100%);
+      border-color: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+    .faq-callout p { color: rgba(255,255,255,0.82); }
+    .faq-callout a {
+      color: #fff;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
     }
 
     .cta-box {
@@ -1304,31 +1414,42 @@
       <div class="wrap">
         <div class="eyebrow">FAQ</div>
         <h2>Spørgsmål, som gør det lettere at tage kontakt</h2>
-        <p class="lead">FAQ-sektionen reducerer usikkerhed og hjælper især nye kunder, som ikke ved præcis, hvad de skal spørge om.</p>
+        <p class="lead">Svarene her er lavet for at gøre det lettere at tage kontakt og hurtigt finde ud af, om vi er de rigtige til opgaven.</p>
 
-        <div class="faq-grid cards-3" style="margin-top:30px;">
-          <details class="faq-item" open>
-            <summary>Hvilke områder dækker I?<span>+</span></summary>
+        <div class="faq-intro-card">
+          <div class="faq-highlight">
+            <strong>Typiske spørgsmål før første kontakt</strong>
+            <p>Mange kunder er i tvivl om geografi, akutte sager, forsikring og hvad de bør have klar. Derfor har vi samlet de spørgsmål, vi oftest får.</p>
+          </div>
+          <div class="faq-callout">
+            <strong>Haster det?</strong>
+            <p>Ved akutte problemer er det hurtigste altid at ringe direkte på <a href="tel:22229818">22 22 98 18</a>.</p>
+          </div>
+        </div>
+
+        <div class="faq-grid cards-3" style="margin-top:24px;">
+          <details class="faq-item">
+            <summary><span>Hvilke områder dækker I?</span><span class="faq-icon">+</span></summary>
             <p>Vi er baseret i Brønshøj og hjælper kunder i Brønshøj og resten af Storkøbenhavn. Ring, hvis du er i tvivl om geografien.</p>
           </details>
           <details class="faq-item">
-            <summary>Hjælper I med akutte problemer?<span>+</span></summary>
+            <summary><span>Hjælper I med akutte problemer?</span><span class="faq-icon">+</span></summary>
             <p>Ja. Ved fx stoppet kloak eller vandproblemer prioriterer vi hasteopgaver, så du hurtigt får afklaring på næste skridt.</p>
           </details>
           <details class="faq-item">
-            <summary>Kan I hjælpe med dokumentation til forsikring?<span>+</span></summary>
+            <summary><span>Kan I hjælpe med dokumentation til forsikring?</span><span class="faq-icon">+</span></summary>
             <p>Ja. TV-inspektion, billeddokumentation og klar beskrivelse af skaden kan være en vigtig del af et forsikringsforløb.</p>
           </details>
           <details class="faq-item">
-            <summary>Arbejder I også for boligforeninger og erhverv?<span>+</span></summary>
+            <summary><span>Arbejder I også for boligforeninger og erhverv?</span><span class="faq-icon">+</span></summary>
             <p>Ja. Siden er målrettet både private kunder, boligforeninger, administratorer og erhvervskunder.</p>
           </details>
           <details class="faq-item">
-            <summary>Giver I tilbud før arbejdet går i gang?<span>+</span></summary>
+            <summary><span>Giver I tilbud før arbejdet går i gang?</span><span class="faq-icon">+</span></summary>
             <p>Ved større opgaver giver vi et overskueligt tilbud og afstemmer omfang, tid og forventninger, før arbejdet sættes i gang.</p>
           </details>
           <details class="faq-item">
-            <summary>Hvad skal jeg have klar, når jeg kontakter jer?<span>+</span></summary>
+            <summary><span>Hvad skal jeg have klar, når jeg kontakter jer?</span><span class="faq-icon">+</span></summary>
             <p>Beskriv gerne problemet kort, adressen, hvor længe det har stået på, og om det haster. Det gør det nemmere at hjælpe dig hurtigt.</p>
           </details>
         </div>
